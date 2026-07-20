@@ -108,17 +108,51 @@ gh api -X POST "repos/${OWNER}/${REPO_V1}/pages" -f build_type=workflow >/dev/nu
   || echo "note: could not set Pages automatically — set it once in Settings > Pages > Source: GitHub Actions"
 
 # ---------- wait, then prove it ----------
-say "Waiting for both deployments (up to 6 minutes)"
+# Waiting for HTTP 200 is not enough: the previous build already answers 200,
+# so a deploy that never ran at all looks identical to one that succeeded.
+# Wait for the workflow run whose SHA matches what was just pushed.
+wait_for_run() {
+  local repo="$1" sha="$2"
+  printf '  %s @ %s ' "$repo" "${sha:0:7}"
+  for _ in $(seq 1 40); do
+    local line status concl
+    line=$(gh run list --repo "${OWNER}/${repo}" --limit 10 \
+             --json headSha,status,conclusion \
+             -q ".[] | select(.headSha==\"$sha\") | \"\(.status) \(.conclusion // \"-\")\"" 2>/dev/null | head -1)
+    status=${line%% *}; concl=${line##* }
+    if [ "$status" = "completed" ]; then
+      echo " -> $concl"
+      [ "$concl" = "success" ] || die "$repo deployment failed — see: gh run list --repo ${OWNER}/${repo}"
+      return 0
+    fi
+    printf '.'
+    sleep 15
+  done
+  die "$repo: no completed run for ${sha:0:7} after 10 minutes"
+}
+
+say "Waiting for both deployments to actually run"
+wait_for_run "$REPO_V2" "$(git -C "$WORK/v2" rev-parse HEAD)"
+wait_for_run "$REPO_V1" "$(git -C "$WORK/v1" rev-parse HEAD)"
+
+say "Confirming both URLs serve the new build"
 for url in "$URL_V2" "$URL_V1"; do
   printf '  %s ' "$url"
-  for _ in $(seq 1 36); do
+  for _ in $(seq 1 24); do
     code=$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 10 "$url" || true)
     [ "$code" = "200" ] && break
     printf '.'
     sleep 10
   done
-  echo " -> ${code:-timeout}"
+  echo "-> ${code:-timeout}"
 done
+
+# The board is the artifact meant to be handed to other people; if it did not
+# publish, the whole point of hosting is missed.
+printf '  %slinks/ ' "$URL_V2"
+board=$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 15 "${URL_V2}links/" || true)
+echo "-> $board"
+[ "$board" = "200" ] || echo "    note: the QR board did not publish — check public/links/index.html is committed"
 
 say "Verifying the two QR codes against the two live sites"
 fail=0
