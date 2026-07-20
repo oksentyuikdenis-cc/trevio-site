@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { EffectComposer, Vignette } from '@react-three/postprocessing'
 import { Physics } from '@react-three/rapier'
@@ -50,7 +51,7 @@ function SceneContents({ tier, reducedMotion, particleCount }: SceneContentsProp
           </Physics>
         )}
 
-        <SignalField count={particleCount} reducedMotion={reducedMotion} />
+        <SignalField count={particleCount} reducedMotion={reducedMotion} tier={tier} />
       </group>
 
       {/* Deliberately no Bloom: with an additive-blended point field, bloom
@@ -74,10 +75,30 @@ interface SceneProps {
 export function Scene({ onReady }: SceneProps) {
   const tier = useDeviceTier()
   const reducedMotion = useReducedMotion()
+  const [contextLost, setContextLost] = useState(false)
   // Kept deliberately sparse: enough to read as a field of individual points,
   // never dense enough to flatten into a solid, glowing disc. Restraint over
   // effects-stacking is the brief, not just the color palette.
   const particleCount = tier === 'low' ? 1400 : 4000
+
+  // iOS Safari can drop the WebGL context under memory pressure (backgrounding
+  // the tab, another tab-heavy session) — far more common there than on
+  // desktop. A lost context otherwise just freezes the last painted frame
+  // forever with no visible signal anything's wrong. Unmounting the canvas
+  // falls back to the hero copy on HeroSection's plain dark background,
+  // matching what SceneErrorBoundary does for a render-phase failure.
+  const handleCreated = useCallback(
+    (state: { gl: { domElement: HTMLCanvasElement } }) => {
+      onReady?.()
+      state.gl.domElement.addEventListener('webglcontextlost', (event) => {
+        event.preventDefault()
+        setContextLost(true)
+      })
+    },
+    [onReady],
+  )
+
+  if (contextLost) return null
 
   return (
     <Canvas
@@ -86,7 +107,7 @@ export function Scene({ onReady }: SceneProps) {
       dpr={tier === 'low' ? 1 : [1, 2]}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       camera={{ position: [0, 0, 9], fov: 36 }}
-      onCreated={() => onReady?.()}
+      onCreated={handleCreated}
     >
       <SceneContents tier={tier} reducedMotion={reducedMotion} particleCount={particleCount} />
     </Canvas>

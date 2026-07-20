@@ -40,6 +40,20 @@ const LINKS = [
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false)
 
+  // Closing the drawer (a state change/re-render) in the same click as the
+  // native anchor jump is unreliable — Chrome and Safari both sometimes
+  // update location.hash without ever scrolling, if the target's layout is
+  // still settling when the click's default action runs. Doing the scroll
+  // ourselves, after the close, makes it deterministic. `behavior` is
+  // intentionally omitted so it defers to html's CSS `scroll-behavior`
+  // (smooth, or auto under prefers-reduced-motion — see global.css).
+  const handleMobileLinkClick = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault()
+    setMenuOpen(false)
+    document.querySelector(href)?.scrollIntoView({ block: 'start' })
+    history.pushState(null, '', href)
+  }
+
   // A resize past the mobile breakpoint (e.g. rotating a phone to landscape,
   // or a tablet in a split-view app switching width) should not leave the
   // drawer stranded open with no way to see the now-visible desktop links.
@@ -103,7 +117,7 @@ export function Nav() {
             className="nav__mobile-link"
             href={link.href}
             tabIndex={menuOpen ? 0 : -1}
-            onClick={() => setMenuOpen(false)}
+            onClick={handleMobileLinkClick(link.href)}
           >
             {link.label}
           </a>
