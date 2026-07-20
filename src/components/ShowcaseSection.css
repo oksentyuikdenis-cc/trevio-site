@@ -1,0 +1,189 @@
+.showcase {
+  padding: var(--landing-space-24) 0;
+  border-bottom: 1px solid var(--pulse-border-subtle);
+}
+
+.showcase__head {
+  max-width: var(--landing-container-narrow);
+  margin-bottom: var(--landing-space-20);
+}
+
+.showcase__lead {
+  font-family: var(--pulse-font-sans);
+  font-size: var(--pulse-type-body-lg-size);
+  line-height: var(--pulse-type-body-lg-lh);
+  color: var(--pulse-text-secondary);
+  max-width: 56ch;
+  margin: 0;
+}
+
+.showcase__card-wrap {
+  max-width: 720px;
+}
+
+/* --- Faithful reproduction of Meridian's real AIInsightCard component
+   (see meridian-components/src/components/AIInsightCard) — same class
+   names, same tokens, so the marketing site and the actual product stay
+   pixel-consistent without a cross-version React dependency between the
+   two projects. --- */
+
+.pulse-ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--pulse-font-sans);
+  font-size: 11px;
+  color: var(--pulse-text-tertiary);
+  flex: none;
+  white-space: nowrap;
+}
+
+.pulse-ai-badge__spark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pulse-color-accent-500);
+  opacity: 0.72;
+  flex: none;
+}
+
+.pulse-insight-card {
+  background: var(--pulse-surface-card);
+  border: 1px solid var(--pulse-border-subtle);
+  border-left: 2px solid var(--pulse-color-accent-500);
+  border-radius: var(--pulse-radius-md);
+  padding: var(--pulse-space-6);
+  box-shadow: var(--pulse-elevation-3-shadow);
+}
+
+.pulse-insight-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--pulse-space-4);
+  margin-bottom: var(--pulse-space-2);
+}
+
+.pulse-insight-card__title {
+  font-family: var(--pulse-font-sans);
+  font-weight: var(--pulse-weight-semibold);
+  font-size: var(--pulse-type-h4-size);
+  color: var(--pulse-text-primary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.pulse-insight-card__scope {
+  font-family: var(--pulse-font-sans);
+  font-size: var(--pulse-type-body-sm-size);
+  color: var(--pulse-text-tertiary);
+  margin-bottom: var(--pulse-space-4);
+}
+
+.pulse-insight-card__body {
+  font-family: var(--pulse-font-serif);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--pulse-text-body);
+  margin: 0 0 var(--pulse-space-4);
+}
+
+.pulse-insight-card__impact {
+  display: flex;
+  gap: var(--pulse-space-5);
+  flex-wrap: wrap;
+  padding: var(--pulse-space-3) 0;
+  border-top: 1px solid var(--pulse-border-subtle);
+  border-bottom: 1px solid var(--pulse-border-subtle);
+  margin-bottom: var(--pulse-space-4);
+  font-family: var(--pulse-font-sans);
+  font-size: var(--pulse-type-body-sm-size);
+  color: var(--pulse-text-secondary);
+}
+
+.pulse-insight-card__impact strong {
+  color: var(--pulse-text-primary);
+}
+
+.pulse-insight-card__evidence {
+  display: flex;
+  gap: var(--pulse-space-3);
+  overflow-x: auto;
+  margin-bottom: var(--pulse-space-4);
+  padding-bottom: 4px;
+}
+
+.pulse-evidence-chip {
+  flex: 0 0 auto;
+  max-width: 220px;
+  background: var(--pulse-surface-raised);
+  border-radius: var(--pulse-radius-sm);
+  padding: var(--pulse-space-2) var(--pulse-space-3);
+  font-family: var(--pulse-font-sans);
+  font-size: 11.5px;
+  color: var(--pulse-text-secondary);
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.pulse-evidence-chip__source {
+  color: var(--pulse-text-tertiary);
+  display: block;
+  font-size: 10.5px;
+  margin-top: 2px;
+}
+
+.pulse-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pulse-radius-full);
+  background: var(--pulse-surface-floating);
+  color: var(--pulse-text-secondary);
+  font-family: var(--pulse-font-sans);
+  font-weight: var(--pulse-weight-semibold);
+  flex: none;
+  width: 20px;
+  height: 20px;
+  font-size: 9px;
+}
+
+.pulse-insight-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--pulse-space-3);
+}
+
+.pulse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pulse-space-2);
+  font-family: var(--pulse-font-sans);
+  font-weight: var(--pulse-weight-semibold);
+  border-radius: var(--pulse-radius-sm);
+  border: 1px solid transparent;
+  cursor: default;
+  white-space: nowrap;
+  height: 28px;
+  padding: 0 var(--pulse-space-3);
+  font-size: var(--pulse-type-body-sm-size);
+}
+
+.pulse-btn--secondary {
+  background: transparent;
+  border-color: var(--pulse-border-emphasis);
+  color: var(--pulse-text-body);
+}
+
+.pulse-btn--primary {
+  background: var(--pulse-color-accent-500);
+  color: var(--pulse-text-on-accent);
+}
+
+@media (max-width: 640px) {
+  .pulse-insight-card__impact {
+    gap: var(--pulse-space-3);
+  }
+}

@@ -1,0 +1,53 @@
+/* Supplemental tokens for marketing surfaces only (Pulse §4.12) — looser
+   spacing and a display type size than the app shell ever uses. Kept
+   separate from tokens.css so that file stays a faithful copy of the
+   product design system's actual token set. */
+:root {
+  --landing-space-20: 80px;
+  --landing-space-24: 96px;
+  --landing-space-32: 128px;
+
+  --landing-type-display-size: 40px;
+  --landing-type-display-lh: 48px;
+  --landing-type-section-size: 34px;
+  --landing-type-section-lh: 42px;
+  --landing-type-lead-size: 19px;
+  --landing-type-lead-lh: 30px;
+
+  --landing-container-width: 1120px;
+  --landing-container-narrow: 720px;
+}
+
+.landing-container {
+  width: 100%;
+  max-width: var(--landing-container-width);
+  margin: 0 auto;
+  padding: 0 var(--pulse-space-12);
+}
+
+.landing-eyebrow {
+  font-family: var(--pulse-font-sans);
+  font-size: var(--pulse-type-caption-size);
+  font-weight: var(--pulse-weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pulse-color-accent-500);
+  margin: 0 0 var(--pulse-space-4);
+}
+
+.landing-heading {
+  font-family: var(--pulse-font-sans);
+  font-weight: var(--pulse-weight-semibold);
+  font-size: clamp(26px, 3.4vw, var(--landing-type-section-size));
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--pulse-text-primary);
+  margin: 0 0 var(--pulse-space-6);
+  max-width: 20ch;
+}
+
+@media (max-width: 640px) {
+  .landing-container {
+    padding: 0 var(--pulse-space-5);
+  }
+}

@@ -1,0 +1,122 @@
+:root {
+  --pulse-color-accent-50: #FBF3E4;
+  --pulse-color-accent-200: #F2D9A6;
+  --pulse-color-accent-400: #EDBB6B;
+  --pulse-color-accent-500: #E8A33D;
+  --pulse-color-accent-600: #CC8A2C;
+  --pulse-color-accent-700: #A66E20;
+
+  --pulse-color-neutral-0: #0A0A0C;
+  --pulse-color-neutral-50: #121214;
+  --pulse-color-neutral-100: #18181B;
+  --pulse-color-neutral-150: #1F1F23;
+  --pulse-color-neutral-200: #26262B;
+  --pulse-color-neutral-250: #2E2E34;
+  --pulse-color-neutral-300: #3A3A41;
+  --pulse-color-neutral-350: #4A4A52;
+  --pulse-color-neutral-400: #5C5C66;
+  --pulse-color-neutral-500: #7A7A85;
+  --pulse-color-neutral-600: #9C9CA6;
+  --pulse-color-neutral-700: #C2C2C9;
+  --pulse-color-neutral-800: #E4E3E0;
+  --pulse-color-neutral-900: #F5F4F1;
+
+  --pulse-color-positive: #4FB477;
+  --pulse-color-positive-subtle: rgba(79, 180, 119, 0.14);
+  --pulse-color-negative: #E5626A;
+  --pulse-color-negative-subtle: rgba(229, 98, 106, 0.14);
+  --pulse-color-caution: #D98C3D;
+  --pulse-color-caution-subtle: rgba(217, 140, 61, 0.14);
+  --pulse-color-info: #6C9BEF;
+  --pulse-color-info-subtle: rgba(108, 155, 239, 0.14);
+
+  --pulse-surface-canvas: var(--pulse-color-neutral-0);
+  --pulse-surface-panel: var(--pulse-color-neutral-50);
+  --pulse-surface-card: var(--pulse-color-neutral-100);
+  --pulse-surface-raised: var(--pulse-color-neutral-150);
+  --pulse-surface-floating: var(--pulse-color-neutral-200);
+  --pulse-surface-modal: var(--pulse-color-neutral-250);
+
+  --pulse-text-primary: var(--pulse-color-neutral-900);
+  --pulse-text-body: var(--pulse-color-neutral-800);
+  --pulse-text-secondary: var(--pulse-color-neutral-600);
+  --pulse-text-tertiary: var(--pulse-color-neutral-500);
+  --pulse-text-disabled: var(--pulse-color-neutral-400);
+  --pulse-text-on-accent: #1A1206;
+
+  --pulse-border-subtle: rgba(255, 255, 255, 0.06);
+  --pulse-border-default: var(--pulse-color-neutral-300);
+  --pulse-border-emphasis: var(--pulse-color-neutral-350);
+  --pulse-border-accent: rgba(232, 163, 61, 0.48);
+  --pulse-border-negative: rgba(229, 98, 106, 0.6);
+
+  --pulse-space-1: 4px;
+  --pulse-space-2: 8px;
+  --pulse-space-3: 12px;
+  --pulse-space-4: 16px;
+  --pulse-space-5: 20px;
+  --pulse-space-6: 24px;
+  --pulse-space-8: 32px;
+  --pulse-space-10: 40px;
+  --pulse-space-12: 48px;
+  --pulse-space-16: 64px;
+
+  --pulse-radius-xs: 4px;
+  --pulse-radius-sm: 6px;
+  --pulse-radius-md: 10px;
+  --pulse-radius-lg: 14px;
+  --pulse-radius-xl: 20px;
+  --pulse-radius-full: 9999px;
+
+  --pulse-motion-instant: 100ms;
+  --pulse-motion-fast: 120ms;
+  --pulse-motion-default: 180ms;
+  --pulse-motion-moderate: 240ms;
+  --pulse-motion-slow: 320ms;
+  --pulse-motion-deliberate: 480ms;
+  --pulse-ease: cubic-bezier(0.2, 0, 0, 1);
+  --pulse-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --pulse-font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --pulse-font-serif: 'Newsreader', ui-serif, Georgia, serif;
+  --pulse-font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --pulse-type-h1-size: 28px;   --pulse-type-h1-lh: 36px;
+  --pulse-type-h2-size: 22px;   --pulse-type-h2-lh: 30px;
+  --pulse-type-h3-size: 18px;   --pulse-type-h3-lh: 26px;
+  --pulse-type-h4-size: 15px;   --pulse-type-h4-lh: 22px;
+  --pulse-type-body-lg-size: 16px; --pulse-type-body-lg-lh: 26px;
+  --pulse-type-body-size: 14px; --pulse-type-body-lh: 22px;
+  --pulse-type-body-sm-size: 13px; --pulse-type-body-sm-lh: 18px;
+  --pulse-type-caption-size: 12px; --pulse-type-caption-lh: 16px;
+
+  --pulse-weight-regular: 400;
+  --pulse-weight-medium: 500;
+  --pulse-weight-semibold: 600;
+  --pulse-weight-bold: 700;
+
+  --pulse-elevation-1-shadow: none;
+  --pulse-elevation-2-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+  --pulse-elevation-3-shadow: 0 8px 24px rgba(0, 0, 0, 0.36);
+  --pulse-elevation-4-shadow: 0 16px 48px rgba(0, 0, 0, 0.48);
+}
+
+.pulse-root {
+  background: var(--pulse-surface-canvas);
+  color: var(--pulse-text-body);
+  font-family: var(--pulse-font-sans);
+  font-size: var(--pulse-type-body-size);
+  line-height: var(--pulse-type-body-lh);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pulse-root *,
+.pulse-root *::before,
+.pulse-root *::after {
+  box-sizing: border-box;
+}
+
+.pulse-root :focus-visible {
+  outline: 2px solid var(--pulse-color-accent-500);
+  outline-offset: 2px;
+}

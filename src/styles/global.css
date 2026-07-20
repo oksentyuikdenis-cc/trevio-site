@@ -1,0 +1,44 @@
+@import './tokens.css';
+@import './fonts/fonts.css';
+@import './landing.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Fixed nav (64px) would otherwise cover the top of a section on jump-to-anchor. */
+  scroll-padding-top: 64px;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--pulse-surface-canvas);
+  color: var(--pulse-text-body);
+  font-family: var(--pulse-font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.page {
+  position: relative;
+}
+
+.signal-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
