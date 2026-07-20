@@ -1,0 +1,28 @@
+{
+  "title": "Trevio",
+  "subtitle": "Scan any of these",
+  "note": "Feedback intelligence for product teams",
+  "links": [
+    {
+      "label": "Version 0.1",
+      "title": "Where we started",
+      "hint": "The first build. Kept live so the change is something you can look at, not just hear about.",
+      "url": "https://oksentyuikdenis-cc.github.io/trevio-site-v1/",
+      "status": "pending-deploy"
+    },
+    {
+      "label": "Version 0.2",
+      "title": "Where we are now",
+      "hint": "Scroll the top of it — the field behind the text is the product doing its job, not decoration.",
+      "url": "https://oksentyuikdenis-cc.github.io/trevio-site/",
+      "status": "ready"
+    },
+    {
+      "label": "Tell us",
+      "title": "What did you think?",
+      "hint": "About either site, or the talk. We are building a product about listening to feedback — it would be strange not to ask for yours.",
+      "url": "mailto:hello@trevio.app?subject=Trevio+feedback&body=The+sites:%0A%0AThe+talk:%0A%0AWould+you+use+it:%0A%0A",
+      "status": "ready"
+    }
+  ]
+}

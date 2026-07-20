@@ -2,35 +2,37 @@
   border-top: 1px solid var(--border-subtle);
 }
 
+/* Claim on the left, the one thing to do on the right. With the QR gone a
+   single left column would have left half the closing section empty, and
+   the last thing the page shows should not look unfinished. */
 .cta__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(32px, 6vw, 88px);
   align-items: start;
 }
 
-.cta__main {
+.cta__lead {
   display: flex;
   flex-direction: column;
   gap: var(--sp-5);
   min-width: 0;
 }
 
-/* Deliberately unconstrained. Capping this at ~18ch stacked a 57px headline
-   into five short lines against a column of empty space — the closing
-   argument of the page rendered as a narrow ribbon. */
 .cta .h2 {
-  max-width: 20ch;
+  max-width: 16ch;
 }
 
-.cta__main .prose {
-  max-width: 48ch;
+.cta__lead .prose {
+  max-width: 46ch;
 }
 
 .cta__form {
-  margin-top: var(--sp-4);
   width: 100%;
-  max-width: 560px;
+  max-width: 520px;
+  /* Optically aligns the field with the first line of the heading rather
+     than the top of its box. */
+  padding-top: var(--sp-2);
 }
 
 .cta__label {
@@ -87,38 +89,18 @@
   color: var(--accent-500);
 }
 
-.cta__qr {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-5);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  text-align: center;
-}
-
-.cta__qr img {
-  /* The code is printed dark-on-light; on a dark page it needs its own
-     paper or scanners struggle with it. */
-  background: #fff;
-  padding: var(--sp-2);
-  border-radius: var(--radius-sm);
-}
-
-.cta__qr p {
-  font-size: var(--type-caption);
-  color: var(--text-tertiary);
-  max-width: 18ch;
-}
-
 @media (max-width: 860px) {
   .cta__inner {
     grid-template-columns: 1fr;
+    gap: var(--sp-8);
   }
 
-  .cta__qr {
-    justify-self: start;
+  .cta .h2 {
+    max-width: 100%;
+  }
+
+  .cta__form {
+    padding-top: 0;
   }
 }
 

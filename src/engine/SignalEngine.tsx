@@ -25,6 +25,37 @@ function Field({ phaseRef, count, reduced }: FieldProps) {
   const groupRef = useRef<THREE.Points>(null)
   const smoothed = useRef(0)
 
+  /**
+   * Share of the scroll the first leg should own so that both legs move at
+   * the same world-space speed.
+   *
+   * The two legs are not the same length: scattering out to six clusters
+   * covers noticeably more ground than collapsing six clusters into three
+   * nodes. Given each half of the stage, the field visibly races through the
+   * first half and crawls through the second — measured at 1.65× before this
+   * correction. Splitting the scroll by distance instead of by leg count
+   * makes the speed constant end to end.
+   */
+  const legBalance = useMemo(() => {
+    let first = 0
+    let second = 0
+    for (let i = 0; i < buffers.count; i++) {
+      const j = i * 3
+      first += Math.hypot(
+        buffers.cluster[j] - buffers.scatter[j],
+        buffers.cluster[j + 1] - buffers.scatter[j + 1],
+        buffers.cluster[j + 2] - buffers.scatter[j + 2],
+      )
+      second += Math.hypot(
+        buffers.resolve[j] - buffers.cluster[j],
+        buffers.resolve[j + 1] - buffers.cluster[j + 1],
+        buffers.resolve[j + 2] - buffers.cluster[j + 2],
+      )
+    }
+    const total = first + second
+    return total > 0 ? first / total : 0.5
+  }, [buffers])
+
   const geometry = useMemo(() => {
     const g = new THREE.BufferGeometry()
     // `position` is required by three even though the shader ignores it in
@@ -51,12 +82,20 @@ function Field({ phaseRef, count, reduced }: FieldProps) {
   const fit = Math.min(1, viewport.width / 13)
 
   useFrame((state, delta) => {
-    const target = phaseRef.current ?? 0
-    // Critically-damped follow rather than a direct bind: scroll on a
-    // trackpad arrives in jerky bursts, and binding straight to it makes
-    // the field stutter. Frame-rate independent so it behaves the same at
-    // 120Hz and on a throttled laptop.
-    const k = 1 - Math.exp(-delta * (reduced ? 40 : 5.5))
+    // Scroll arrives as an even 0–2. Redistribute it across the two legs by
+    // distance so equal scroll always buys equal movement.
+    const raw = Math.min(Math.max(phaseRef.current ?? 0, 0), 2) / 2
+    const target =
+      raw < legBalance
+        ? raw / legBalance
+        : 1 + (raw - legBalance) / (1 - legBalance)
+    // Damped follow rather than a direct bind: scroll on a trackpad arrives
+    // in jerky bursts, and binding straight to it makes the field stutter.
+    // Frame-rate independent, so it behaves the same at 120Hz and on a
+    // throttled laptop. Tightened from 5.5 — the smoothing should take the
+    // jitter out of the scroll, not put a noticeable delay between the
+    // wheel and the field.
+    const k = 1 - Math.exp(-delta * (reduced ? 40 : 8))
     smoothed.current += (target - smoothed.current) * k
 
     material.uniforms.uPhase.value = smoothed.current

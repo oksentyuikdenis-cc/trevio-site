@@ -5,10 +5,14 @@ import { useEffect, useRef } from 'react'
  * writing into a ref rather than state — the value changes on every scroll
  * frame and must never cause a React render.
  *
- * The mapping is deliberately not linear across the whole stage. Each of the
- * three sections owns roughly one resting state, with the transitions
- * happening in the gaps between them, so a reader stopped at "Cluster" is
- * looking at a clustered field rather than something mid-morph.
+ * The mapping is strictly linear: equal scroll always buys equal movement.
+ *
+ * It used to hold the field still across three plateaus — the first fifth of
+ * the stage, the middle, and the last — so that a reader stopped at a given
+ * section saw a settled composition rather than a half-finished morph. That
+ * reasoning does not survive contact with actually scrolling it. The stalls
+ * read as the animation jamming and needing to be pushed, which is a far
+ * worse impression than a field caught mid-transition.
  */
 export function useScrollPhase(stageRef: React.RefObject<HTMLElement | null>) {
   const phaseRef = useRef(0)
@@ -28,16 +32,10 @@ export function useScrollPhase(stageRef: React.RefObject<HTMLElement | null>) {
 
       const t = Math.min(Math.max(scrolled / travel, 0), 1)
 
-      // Hold scattered through the hero, morph, hold clustered through the
-      // problem section, morph, hold resolved through the steps.
-      let phase: number
-      if (t < 0.2) phase = 0
-      else if (t < 0.44) phase = (t - 0.2) / 0.24
-      else if (t < 0.6) phase = 1
-      else if (t < 0.84) phase = 1 + (t - 0.6) / 0.24
-      else phase = 2
-
-      phaseRef.current = phase
+      // Top of the stage is fully scattered, the bottom is fully resolved,
+      // and the halfway point is the clustered state. Nothing in between is
+      // held.
+      phaseRef.current = t * 2
     }
 
     const onScroll = () => {

@@ -29,15 +29,16 @@ export const vertexShader = /* glsl */ `
   varying float vAlpha;
 
   void main() {
-    // Ease each leg separately so the midpoint (fully clustered) is a real
-    // resting state the eye can read, not a moment passed through.
+    // Linear on both legs, on purpose. Easing each leg separately meant the
+    // motion decelerated into phase 1.0 and accelerated back out of it, and
+    // the two slow ends met at the same point — the field visibly hesitated
+    // in the middle of the scroll. Position is driven straight off scroll,
+    // so the only thing that should shape its speed is the scroll itself.
     vec3 pos;
     if (uPhase < 1.0) {
-      float t = smoothstep(0.0, 1.0, uPhase);
-      pos = mix(aScatter, aCluster, t);
+      pos = mix(aScatter, aCluster, uPhase);
     } else {
-      float t = smoothstep(0.0, 1.0, uPhase - 1.0);
-      pos = mix(aCluster, aResolve, t);
+      pos = mix(aCluster, aResolve, min(uPhase - 1.0, 1.0));
     }
 
     // Drift is strongest while scattered and settles as structure emerges —
@@ -57,7 +58,9 @@ export const vertexShader = /* glsl */ `
 
     // Prioritisation made visible: what was not promoted dims as the field
     // resolves, so "we cut this down for you" is something you watch happen.
-    float resolveT = smoothstep(0.0, 1.0, max(uPhase - 1.0, 0.0));
+    // Linear too, so the fade keeps step with the movement instead of
+    // lagging behind it at the ends.
+    float resolveT = clamp(uPhase - 1.0, 0.0, 1.0);
     float presence = mix(mix(1.0, 0.13, resolveT), 1.0, aPromoted);
 
     // Depth cue. Without it every particle is equally bright regardless of
