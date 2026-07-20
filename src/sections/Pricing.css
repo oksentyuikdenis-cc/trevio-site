@@ -1,0 +1,176 @@
+.pricing__layout {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+/* ---- The pilot offer: the only concrete commitment on the page, so it
+   gets the weight a headline price would normally take. ---- */
+
+.pilot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-5);
+  padding: clamp(24px, 3.5vw, 40px);
+  border: 1px solid rgba(232, 163, 61, 0.42);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+}
+
+.pilot__flag {
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--type-overline);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-on-accent);
+  background: var(--accent-500);
+  border-radius: var(--radius-full);
+}
+
+.pilot__title {
+  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+  line-height: 1.15;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.pilot__body {
+  font-family: var(--font-serif);
+  font-size: var(--type-lead);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: var(--measure);
+}
+
+.pilot__terms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-6);
+  width: 100%;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.pilot__terms-label {
+  margin-bottom: var(--sp-3);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.pilot__terms ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.pilot__terms li {
+  position: relative;
+  padding-left: var(--sp-5);
+  font-size: var(--type-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.pilot__terms li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 10px;
+  height: 1px;
+  background: var(--accent-500);
+}
+
+/* ---- The model: what makes the absence of a price a decision rather than
+   an omission. ---- */
+
+.model {
+  padding: clamp(24px, 3vw, 32px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+
+.model__label {
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--sp-4);
+}
+
+.model__label--never {
+  margin-top: var(--sp-8);
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.model__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.model__item {
+  display: block;
+  font-size: var(--type-sm);
+  font-weight: 500;
+  color: var(--text-body);
+}
+
+.model__note {
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--type-caption);
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+
+/* The rejected axes are struck through rather than merely listed — the
+   point is that they were considered and refused, not overlooked. */
+.model__list--never .model__item {
+  color: var(--text-tertiary);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.28);
+}
+
+.pricing__note {
+  margin-top: var(--sp-8);
+  font-size: var(--type-sm);
+  color: var(--text-tertiary);
+  max-width: var(--measure);
+}
+
+@media (max-width: 940px) {
+  .pricing__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .pilot__terms {
+    grid-template-columns: 1fr;
+    gap: var(--sp-6);
+  }
+
+  .pilot .pulse-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

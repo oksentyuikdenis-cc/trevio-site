@@ -1,122 +1,172 @@
+/*
+ * Trevio marketing tokens.
+ *
+ * The palette, the two typefaces, and the serif-for-prose rule come from the
+ * product's design system so the site and the app read as one company. The
+ * type scale and spacing do NOT — the product scale is rooted at 14px for a
+ * dense analyst tool used for hours; a landing page is read once, from
+ * further away, sometimes off a projector. Those values are set here for the
+ * page, not inherited from the app.
+ */
+
 :root {
-  --pulse-color-accent-50: #FBF3E4;
-  --pulse-color-accent-200: #F2D9A6;
-  --pulse-color-accent-400: #EDBB6B;
-  --pulse-color-accent-500: #E8A33D;
-  --pulse-color-accent-600: #CC8A2C;
-  --pulse-color-accent-700: #A66E20;
+  /* ---- Accent. One family, used on CTAs and on exactly one editorial
+     moment per section. Never as a large fill. ---- */
+  --accent-50: #fbf3e4;
+  --accent-200: #f2d9a6;
+  --accent-400: #edbb6b;
+  --accent-500: #e8a33d;
+  --accent-600: #cc8a2c;
+  --accent-700: #a66e20;
 
-  --pulse-color-neutral-0: #0A0A0C;
-  --pulse-color-neutral-50: #121214;
-  --pulse-color-neutral-100: #18181B;
-  --pulse-color-neutral-150: #1F1F23;
-  --pulse-color-neutral-200: #26262B;
-  --pulse-color-neutral-250: #2E2E34;
-  --pulse-color-neutral-300: #3A3A41;
-  --pulse-color-neutral-350: #4A4A52;
-  --pulse-color-neutral-400: #5C5C66;
-  --pulse-color-neutral-500: #7A7A85;
-  --pulse-color-neutral-600: #9C9CA6;
-  --pulse-color-neutral-700: #C2C2C9;
-  --pulse-color-neutral-800: #E4E3E0;
-  --pulse-color-neutral-900: #F5F4F1;
+  /* ---- Neutral ramp. Warm-shifted, never pure black or pure white:
+     pure #000 next to a bright accent halates on OLED, and pure #fff
+     is fatiguing for long-form reading. ---- */
+  --n-0: #0a0a0c;
+  --n-50: #121214;
+  --n-100: #18181b;
+  --n-150: #1f1f23;
+  --n-200: #26262b;
+  --n-250: #2e2e34;
+  --n-300: #3a3a41;
+  --n-350: #4a4a52;
+  --n-400: #5c5c66;
+  --n-500: #7a7a85;
+  --n-600: #9c9ca6;
+  --n-700: #c2c2c9;
+  --n-800: #e4e3e0;
+  --n-900: #f5f4f1;
 
-  --pulse-color-positive: #4FB477;
-  --pulse-color-positive-subtle: rgba(79, 180, 119, 0.14);
-  --pulse-color-negative: #E5626A;
-  --pulse-color-negative-subtle: rgba(229, 98, 106, 0.14);
-  --pulse-color-caution: #D98C3D;
-  --pulse-color-caution-subtle: rgba(217, 140, 61, 0.14);
-  --pulse-color-info: #6C9BEF;
-  --pulse-color-info-subtle: rgba(108, 155, 239, 0.14);
+  --positive: #4fb477;
+  --negative: #e5626a;
+  --caution: #d98c3d;
+  --info: #6c9bef;
 
-  --pulse-surface-canvas: var(--pulse-color-neutral-0);
-  --pulse-surface-panel: var(--pulse-color-neutral-50);
-  --pulse-surface-card: var(--pulse-color-neutral-100);
-  --pulse-surface-raised: var(--pulse-color-neutral-150);
-  --pulse-surface-floating: var(--pulse-color-neutral-200);
-  --pulse-surface-modal: var(--pulse-color-neutral-250);
+  /* ---- Channel colors. One per feedback source; these are the particle
+     colors in the 3D scene, so they must stay distinguishable at 3px. ---- */
+  --ch-support: #6c9bef;
+  --ch-reviews: #e8a33d;
+  --ch-social: #b57bdc;
+  --ch-sales: #4fb477;
+  --ch-community: #e5626a;
+  --ch-surveys: #4fc3c7;
+  --ch-tickets: #d98c3d;
+  --ch-chat: #7f8ff4;
+  --ch-docs: #9c9ca6;
 
-  --pulse-text-primary: var(--pulse-color-neutral-900);
-  --pulse-text-body: var(--pulse-color-neutral-800);
-  --pulse-text-secondary: var(--pulse-color-neutral-600);
-  --pulse-text-tertiary: var(--pulse-color-neutral-500);
-  --pulse-text-disabled: var(--pulse-color-neutral-400);
-  --pulse-text-on-accent: #1A1206;
+  /* ---- Dark surface (default) ---- */
+  --surface: var(--n-0);
+  --surface-raised: var(--n-50);
+  --surface-card: var(--n-100);
+  --text-primary: var(--n-900);
+  --text-body: var(--n-800);
+  --text-secondary: var(--n-600);
+  /* Not `--n-500`. Against the translucent panels that sit over the scene
+     (#121214 once composited) that grey lands at 4.41:1 — under the 4.5
+     needed for body-size text. Two steps lighter clears it at 4.8:1 while
+     still reading as clearly subordinate. */
+  --text-tertiary: #808089;
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --accent-on-surface: var(--accent-500);
+  --text-on-accent: #1a1206;
+  --shadow-card: none;
+  /* Focus indicators carry their own 3:1 requirement against the adjacent
+     surface, so this is a separate token rather than the accent — the accent
+     that reads well on black measures 2.1:1 on the light sections. */
+  --focus-ring: var(--accent-500);
 
-  --pulse-border-subtle: rgba(255, 255, 255, 0.06);
-  --pulse-border-default: var(--pulse-color-neutral-300);
-  --pulse-border-emphasis: var(--pulse-color-neutral-350);
-  --pulse-border-accent: rgba(232, 163, 61, 0.48);
-  --pulse-border-negative: rgba(229, 98, 106, 0.6);
+  /* ---- Type. Marketing scale: fluid, and considerably larger than the
+     product's. `clamp` floors are set so nothing goes below comfortable
+     mobile reading, ceilings so nothing gets absurd on a 27" display. ---- */
+  --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Newsreader', ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --pulse-space-1: 4px;
-  --pulse-space-2: 8px;
-  --pulse-space-3: 12px;
-  --pulse-space-4: 16px;
-  --pulse-space-5: 20px;
-  --pulse-space-6: 24px;
-  --pulse-space-8: 32px;
-  --pulse-space-10: 40px;
-  --pulse-space-12: 48px;
-  --pulse-space-16: 64px;
+  --type-hero: clamp(2.875rem, 7.5vw, 6.5rem); /* 46 -> 104 */
+  --type-hero-lh: 1.02;
+  --type-h2: clamp(2.125rem, 4.5vw, 3.75rem); /* 34 -> 60 */
+  --type-h2-lh: 1.08;
+  --type-h3: clamp(1.375rem, 2vw, 1.75rem); /* 22 -> 28 */
+  --type-h3-lh: 1.25;
+  --type-lead: clamp(1.125rem, 1.6vw, 1.25rem); /* 18 -> 20 */
+  --type-lead-lh: 1.6;
+  --type-body: 1.0625rem; /* 17 */
+  --type-body-lh: 1.65;
+  --type-sm: 0.9375rem; /* 15 */
+  --type-sm-lh: 1.5;
+  --type-caption: 0.8125rem; /* 13 */
+  --type-caption-lh: 1.4;
+  --type-numeral: clamp(2.5rem, 5vw, 4rem);
+  --type-overline: 0.75rem; /* 12 */
 
-  --pulse-radius-xs: 4px;
-  --pulse-radius-sm: 6px;
-  --pulse-radius-md: 10px;
-  --pulse-radius-lg: 14px;
-  --pulse-radius-xl: 20px;
-  --pulse-radius-full: 9999px;
+  /* ---- Space. 4px base. The two large steps exist only for this page. ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+  --sp-32: 128px;
+  --section-y: clamp(80px, 11vw, 128px);
 
-  --pulse-motion-instant: 100ms;
-  --pulse-motion-fast: 120ms;
-  --pulse-motion-default: 180ms;
-  --pulse-motion-moderate: 240ms;
-  --pulse-motion-slow: 320ms;
-  --pulse-motion-deliberate: 480ms;
-  --pulse-ease: cubic-bezier(0.2, 0, 0, 1);
-  --pulse-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
 
-  --pulse-font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --pulse-font-serif: 'Newsreader', ui-serif, Georgia, serif;
-  --pulse-font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  /* 72px bar + 2px progress rail + 1px border. Declared once so the fixed
+     nav and the scroll offset that clears it cannot drift apart. */
+  --nav-height: 75px;
 
-  --pulse-type-h1-size: 28px;   --pulse-type-h1-lh: 36px;
-  --pulse-type-h2-size: 22px;   --pulse-type-h2-lh: 30px;
-  --pulse-type-h3-size: 18px;   --pulse-type-h3-lh: 26px;
-  --pulse-type-h4-size: 15px;   --pulse-type-h4-lh: 22px;
-  --pulse-type-body-lg-size: 16px; --pulse-type-body-lg-lh: 26px;
-  --pulse-type-body-size: 14px; --pulse-type-body-lh: 22px;
-  --pulse-type-body-sm-size: 13px; --pulse-type-body-sm-lh: 18px;
-  --pulse-type-caption-size: 12px; --pulse-type-caption-lh: 16px;
+  --container: 1200px;
+  --container-narrow: 760px;
+  --measure: 70ch;
 
-  --pulse-weight-regular: 400;
-  --pulse-weight-medium: 500;
-  --pulse-weight-semibold: 600;
-  --pulse-weight-bold: 700;
-
-  --pulse-elevation-1-shadow: none;
-  --pulse-elevation-2-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
-  --pulse-elevation-3-shadow: 0 8px 24px rgba(0, 0, 0, 0.36);
-  --pulse-elevation-4-shadow: 0 16px 48px rgba(0, 0, 0, 0.48);
+  /* ---- Motion. Slower than the product's, deliberately: the app charges
+     the user 180ms hundreds of times a day, this page charges them once. ---- */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 420ms;
+  --dur-reveal: 560ms;
 }
 
-.pulse-root {
-  background: var(--pulse-surface-canvas);
-  color: var(--pulse-text-body);
-  font-family: var(--pulse-font-sans);
-  font-size: var(--pulse-type-body-size);
-  line-height: var(--pulse-type-body-lh);
-  -webkit-font-smoothing: antialiased;
-}
+/*
+ * Light surface. Applied to the two sections that carry the product's
+ * output and its proof. Not an inversion of the dark theme — a light canvas
+ * has far less inherent contrast to lean on, so separation shifts from
+ * "lighter surface" to "border plus shadow", and the accent steps one
+ * darker to hold its contrast against the paper.
+ */
+.surface-light {
+  --surface: #faf9f6;
+  --surface-raised: #ffffff;
+  --surface-card: #ffffff;
+  --text-primary: #14141a;
+  --text-body: #2e2e36;
+  --text-secondary: #5c5c66;
+  /* Light surfaces need the opposite correction: the same grey that was too
+     dark on black is too light on paper (4.1:1). */
+  --text-tertiary: #6b6b75;
+  --border-subtle: rgba(20, 20, 26, 0.09);
+  --border-default: rgba(20, 20, 26, 0.16);
+  --border-strong: rgba(20, 20, 26, 0.28);
+  /* One step darker than `--accent-700`, which measures 4.1:1 on the warm
+     off-white and would fail on the 12px overlines it is used for. */
+  --accent-on-surface: #8f5e1a;
+  --focus-ring: #8f5e1a;
+  --shadow-card: 0 1px 2px rgba(20, 20, 26, 0.04), 0 12px 32px rgba(20, 20, 26, 0.08);
 
-.pulse-root *,
-.pulse-root *::before,
-.pulse-root *::after {
-  box-sizing: border-box;
-}
-
-.pulse-root :focus-visible {
-  outline: 2px solid var(--pulse-color-accent-500);
-  outline-offset: 2px;
+  background: var(--surface);
+  color: var(--text-body);
 }

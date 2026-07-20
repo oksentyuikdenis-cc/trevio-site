@@ -1,16 +1,19 @@
 @import './tokens.css';
 @import './fonts/fonts.css';
-@import './landing.css';
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  /* Fixed nav (64px, plus safe-area-inset-top on notched phones — see
-     Nav.css) would otherwise cover the top of a section on jump-to-anchor. */
-  scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  /* Nav height plus breathing room. Measured at exactly the bar height, a
+     jumped-to section lands flush against the underside of the nav — and
+     the 3px of progress rail and border tuck its first line underneath. */
+  scroll-padding-top: calc(var(--nav-height) + var(--sp-6) + env(safe-area-inset-top, 0px));
+  -webkit-text-size-adjust: 100%;
 }
 
 html,
@@ -21,33 +24,272 @@ body,
 }
 
 body {
-  background: var(--pulse-surface-canvas);
-  color: var(--pulse-text-body);
-  font-family: var(--pulse-font-sans);
+  background: var(--n-0);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--type-body);
+  line-height: var(--type-body-lh);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  /* iOS Safari flashes a gray highlight rect on every tap by default; the
-     product already has its own hover/active states. */
   -webkit-tap-highlight-color: transparent;
 }
 
-.page {
-  position: relative;
+/* Every numeral on the page is tabular. Proportional figures make a
+   counter visibly jitter as it counts, and make a pricing column fail to
+   align down its own decimal point. */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 
-.signal-canvas {
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* On touch devices every control has to be reachable with a thumb. The
+   component library sizes its buttons for a mouse-driven app shell, which
+   is correct there and too small here. */
+@media (pointer: coarse) {
+  .pulse-btn {
+    min-height: 44px;
+  }
+
+  .nav__brand,
+  .footer__links a,
+  .nav__links a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* Keyboard users land on the nav first; without this they would tab through
+   it on every visit before reaching anything worth reading. */
+.skip-link {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  /* Without this, a touch-drag that starts on the canvas is captured by
-     R3F's pointer handling and the page won't scroll — the single most
-     common "full-bleed WebGL hero" mobile bug. Vertical pan always passes
-     through to the page; only true taps/drags are left for the scene. */
-  touch-action: pan-y;
+  left: var(--sp-4);
+  top: var(--sp-4);
+  z-index: 100;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--accent-500);
+  color: var(--text-on-accent);
+  font-size: var(--type-sm);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--dur-base) var(--ease);
 }
 
+.skip-link:focus {
+  transform: none;
+}
+
+/* ---------- Layout primitives ---------- */
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+  background: var(--surface);
+  color: var(--text-body);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+}
+
+.measure {
+  max-width: var(--measure);
+}
+
+/* ---------- Type primitives ---------- */
+
+.overline {
+  font-size: var(--type-overline);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-on-surface);
+  margin: 0;
+}
+
+.h2 {
+  font-size: var(--type-h2);
+  line-height: var(--type-h2-lh);
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.h3 {
+  font-size: var(--type-h3);
+  line-height: var(--type-h3-lh);
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Serif marks prose written to be read, sans marks anything scanned or
+   clicked. The switch itself is the signal — it needs no label. */
+.prose {
+  font-family: var(--font-serif);
+  font-size: var(--type-lead);
+  line-height: var(--type-lead-lh);
+  color: var(--text-secondary);
+  max-width: var(--measure);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  margin-bottom: clamp(48px, 6vw, 80px);
+}
+
+/* ---------- Reveal ---------- */
+
+/* Hidden only once JS has confirmed it can un-hide it. Without the
+   `js-anim` gate, any failure in the reveal chain — no JS, a throttled
+   background tab, an observer that never fires — would leave a blank page. */
+.js-anim .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js-anim .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Print ----------
+   A printed copy is a realistic handout at a pitch. Without this the page
+   comes out as a black rectangle: the whole site is a dark theme, the scene
+   is a canvas that prints as nothing useful, and every FAQ answer is inside
+   a collapsed <details>. Flip to paper, drop the chrome, open everything. */
+@media print {
+  .stage__scene,
+  .nav,
+  .skip-link,
+  .hero__hint,
+  .cta__form {
+    display: none !important;
+  }
+
+  html,
+  body,
+  .stage,
+  .section,
+  .footer {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  .section {
+    padding-block: 24pt;
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  .h2,
+  .h3,
+  .hero__title,
+  .chaos__figure-value,
+  .plan__price-value {
+    color: #000 !important;
+  }
+
+  p,
+  li,
+  td,
+  th,
+  span,
+  .prose {
+    color: #222 !important;
+  }
+
+  /* Answers a reader cannot expand on paper. */
+  .faq__item {
+    display: block;
+  }
+
+  .faq__item > .faq__a {
+    display: block !important;
+  }
+
+  .faq__marker {
+    display: none;
+  }
+
+  .hero__title {
+    font-size: 32pt;
+  }
+
+  .h2 {
+    font-size: 20pt;
+  }
+
+  .reveal,
+  .js-anim .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ---------- Reduced motion ----------
+   Motion is removed, not shortened, and every revealed element is forced
+   visible — a reveal that never fires is a blank page, which is a far worse
+   failure than an unanimated one. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Must match the `.js-anim .reveal` specificity above, or the hidden
+     state would win and reduced-motion users would get a blank page. */
+  .js-anim .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

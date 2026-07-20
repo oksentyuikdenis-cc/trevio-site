@@ -1,0 +1,62 @@
+.footer {
+  padding-block: var(--sp-12) calc(var(--sp-12) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border-subtle);
+  background: var(--n-0);
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--sp-8);
+  align-items: start;
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  /* Without this, the default `stretch` pulls the wordmark to the full
+     column width and the mark floats in the middle of an empty box. */
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.footer__brand img {
+  height: 20px;
+  width: auto;
+}
+
+.footer__brand p {
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-5);
+}
+
+.footer__links a {
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+  text-decoration: none;
+}
+
+.footer__links a:hover {
+  color: var(--text-body);
+}
+
+.footer__meta {
+  grid-column: 1 / -1;
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+  max-width: var(--measure);
+}
+
+@media (max-width: 720px) {
+  .footer__inner {
+    grid-template-columns: 1fr;
+  }
+}

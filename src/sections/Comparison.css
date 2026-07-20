@@ -1,0 +1,123 @@
+.comparison {
+  padding-top: 0;
+  border-bottom: 1px solid rgba(20, 20, 26, 0.08);
+}
+
+.comparison__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.comparison__caption {
+  /* Present for screen readers; the surrounding copy already says this
+     visually, and repeating it would be noise. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.comparison__table thead th {
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.comparison__table tbody th {
+  text-align: left;
+  font-weight: 500;
+  padding: var(--sp-5) var(--sp-4);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.comparison__table tbody td {
+  padding: var(--sp-5) var(--sp-4);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+  font-size: var(--type-sm);
+}
+
+.comparison__metric {
+  display: block;
+  font-size: var(--type-sm);
+  color: var(--text-primary);
+}
+
+.comparison__note {
+  display: block;
+  margin-top: var(--sp-1);
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+  max-width: 46ch;
+}
+
+.comparison__manual {
+  color: var(--text-tertiary);
+}
+
+/* The winning column is marked by weight and a single hairline, not by a
+   coloured fill — a green-highlighted comparison column is the visual
+   grammar of a pricing page trying to sell you something. */
+.comparison__trevio {
+  color: var(--text-primary);
+  font-weight: 500;
+  box-shadow: inset 2px 0 0 var(--accent-on-surface);
+}
+
+@media (max-width: 720px) {
+  .comparison__table,
+  .comparison__table tbody,
+  .comparison__table tr,
+  .comparison__table th,
+  .comparison__table td {
+    display: block;
+    width: 100%;
+  }
+
+  .comparison__table thead {
+    display: none;
+  }
+
+  .comparison__table tr {
+    padding-block: var(--sp-5);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .comparison__table tbody th,
+  .comparison__table tbody td {
+    border-bottom: 0;
+    padding: var(--sp-1) 0;
+  }
+
+  /* Without the header row, each cell has to name itself. */
+  .comparison__manual::before,
+  .comparison__trevio::before {
+    display: inline-block;
+    min-width: 11ch;
+    font-size: var(--type-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .comparison__manual::before {
+    content: 'By hand';
+  }
+
+  .comparison__trevio::before {
+    content: 'Trevio';
+  }
+
+  .comparison__trevio {
+    box-shadow: none;
+  }
+}

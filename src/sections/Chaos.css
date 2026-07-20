@@ -1,0 +1,100 @@
+.chaos__head {
+  margin-bottom: var(--sp-12);
+}
+
+.chaos__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding-block: var(--sp-8);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: var(--sp-10);
+}
+
+.chaos__figure-value {
+  font-size: var(--type-numeral);
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--n-900);
+}
+
+.chaos__figure-label {
+  font-size: var(--type-sm);
+  color: var(--text-tertiary);
+}
+
+.chaos__sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.chaos__source {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  /* Panels sit over a live particle field; a flat fill would either hide it
+     entirely or let it eat the text. Translucent plus blur keeps both. */
+  background: rgba(18, 18, 20, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.chaos__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  grid-row: span 2;
+  /* Spanning both rows centres the dot between the channel name and its
+     detail line, where it reads as an orphaned bullet belonging to neither.
+     Pin it to the optical centre of the first line instead. */
+  align-self: start;
+  margin-top: 7px;
+}
+
+.chaos__source-name {
+  font-size: var(--type-sm);
+  font-weight: 500;
+  color: var(--text-body);
+}
+
+.chaos__source-share {
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+}
+
+.chaos__source-detail {
+  grid-column: 2;
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+}
+
+.chaos__note {
+  margin-top: var(--sp-8);
+  font-size: var(--type-sm);
+  color: var(--text-tertiary);
+  max-width: var(--measure);
+}
+
+@media (max-width: 1023px) {
+  .chaos__sources {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 639px) {
+  .chaos__sources {
+    grid-template-columns: 1fr;
+  }
+}

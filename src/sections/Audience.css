@@ -1,0 +1,94 @@
+/* The mirror of the seam at the top of the light block: the dark surface
+   slides back over the paper the same way, so both boundaries read as one
+   deliberate device rather than one considered edge and one accident. */
+.audience {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--sp-8) * -1);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--n-0);
+  padding-top: calc(var(--section-y) - var(--sp-6));
+}
+
+.audience__grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+.audience__fits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+
+.audience__fit {
+  padding-bottom: var(--sp-8);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.audience__fit:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.audience__fit h3 {
+  margin-bottom: var(--sp-3);
+}
+
+.audience__fit p {
+  font-size: var(--type-sm);
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: var(--measure);
+}
+
+.audience__misfits {
+  padding: var(--sp-6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+
+.audience__misfits-title {
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--sp-4);
+}
+
+.audience__misfits ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.audience__misfits li {
+  position: relative;
+  padding-left: var(--sp-5);
+  font-size: var(--type-sm);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.audience__misfits li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 10px;
+  height: 1px;
+  background: var(--text-tertiary);
+}
+
+@media (max-width: 900px) {
+  .audience__grid {
+    grid-template-columns: 1fr;
+  }
+}

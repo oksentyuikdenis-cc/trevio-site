@@ -1,0 +1,93 @@
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(72px + var(--sp-16)) var(--sp-24);
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-6);
+}
+
+.hero__eyebrow {
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-500);
+  margin: 0;
+}
+
+.hero__title {
+  font-size: var(--type-hero);
+  line-height: var(--type-hero-lh);
+  letter-spacing: -0.032em;
+  font-weight: 600;
+  color: var(--n-900);
+  margin: 0;
+  max-width: 17ch;
+  text-wrap: balance;
+}
+
+/* The serif italic is the one typographic flourish on the page. It marks the
+   half of the sentence that carries the promise, and it is the same serif
+   the product uses for everything the model writes — so the flourish is also
+   a preview of the product's voice. */
+.hero__title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  color: var(--accent-400);
+}
+
+.hero__lead {
+  font-size: var(--type-lead);
+  line-height: var(--type-lead-lh);
+  color: var(--n-700);
+  max-width: 58ch;
+  margin: 0;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+}
+
+.hero__hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4vh, 40px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--type-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-500);
+  white-space: nowrap;
+}
+
+.hero__hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--n-400), transparent);
+}
+
+@media (max-width: 767px) {
+  .hero__title {
+    max-width: 100%;
+  }
+
+  .hero__hint {
+    display: none;
+  }
+}

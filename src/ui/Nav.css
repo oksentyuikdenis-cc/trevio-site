@@ -1,0 +1,158 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  padding-top: env(safe-area-inset-top, 0px);
+  transition: background var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.nav.is-condensed,
+.nav.is-open {
+  background: rgba(10, 10, 12, 0.82);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom-color: var(--border-subtle);
+}
+
+.nav__bar {
+  /* Keep in step with --nav-height (bar + 2px rail + 1px border). */
+  height: calc(var(--nav-height) - 3px);
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.nav__brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nav__brand img {
+  height: 22px;
+  width: auto;
+}
+
+.nav__links {
+  display: flex;
+  gap: var(--sp-6);
+  margin-right: auto;
+}
+
+.nav__links a {
+  font-size: var(--type-sm);
+  color: var(--n-600);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.nav__links a:hover {
+  color: var(--n-900);
+}
+
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* Reading progress. Thin enough to be ambient, and the only element on the
+   page allowed to sit above everything else. */
+.nav__progress {
+  height: 2px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.nav__progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent-500);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.nav__toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav__toggle span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--n-800);
+  transition: transform var(--dur-base) var(--ease), opacity var(--dur-base) var(--ease);
+}
+
+.nav.is-open .nav__toggle span:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+.nav.is-open .nav__toggle span:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+.nav__menu {
+  display: none;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-4) clamp(20px, 5vw, 48px) var(--sp-8);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.nav__menu a {
+  padding-block: var(--sp-3);
+  font-size: 1.0625rem;
+  color: var(--n-800);
+  text-decoration: none;
+  /* 44px minimum touch target, met by padding rather than a fixed height so
+     the label can wrap on a narrow phone without being clipped. */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.nav__menu .pulse-btn {
+  margin-top: var(--sp-3);
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 860px) {
+  .nav__links,
+  .nav__actions {
+    display: none;
+  }
+
+  .nav__brand {
+    margin-right: auto;
+  }
+
+  .nav__toggle {
+    display: flex;
+  }
+
+  .nav__menu[hidden] {
+    display: none;
+  }
+
+  .nav__menu:not([hidden]) {
+    display: flex;
+  }
+}

@@ -1,24 +1,50 @@
-import { resolve } from 'node:path'
+import { writeFileSync } from 'node:fs'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-export default defineConfig({
-  // GitHub Pages project site serves from /trevio-site/, not the domain root —
-  // asset URLs need this prefix or they 404 there (local dev is unaffected).
-  base: process.env.GITHUB_PAGES ? '/trevio-site/' : '/',
-  plugins: [react()],
-  build: {
-    rollupOptions: {
-      input: {
-        // The site itself.
-        main: resolve(__dirname, 'index.html'),
-        // Standalone tuning page for the signal sphere (/sandbox.html).
-        // Kept as a separate entry so it never lands in the site's bundle,
-        // and so work on the sphere and work on the site don't block each
-        // other.
-        sandbox: resolve(__dirname, 'sandbox.html'),
-      },
+/**
+ * Dev-only endpoint used once to write the generated share card to disk from
+ * og-gen.html. Kept in the repo so the image can be regenerated after a copy
+ * or brand change instead of being a mystery binary nobody can reproduce.
+ * It never ships: `apply: 'serve'` keeps it out of the build.
+ */
+function ogWriter() {
+  return {
+    name: 'og-writer',
+    apply: 'serve' as const,
+    configureServer(server: {
+      middlewares: {
+        use: (path: string, fn: (req: unknown, res: unknown) => void) => void
+      }
+    }) {
+      server.middlewares.use('/__save-og', (req: any, res: any) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end('POST only')
+          return
+        }
+        let body = ''
+        req.on('data', (chunk: Buffer) => {
+          body += chunk
+        })
+        req.on('end', () => {
+          const base64 = body.replace(/^data:image\/png;base64,/, '')
+          writeFileSync(new URL('./public/og.png', import.meta.url), Buffer.from(base64, 'base64'))
+          res.statusCode = 200
+          res.end('written')
+        })
+      })
     },
+  }
+}
+
+// Relative base so the built site opens from a file server, a subpath on
+// GitHub Pages, or a laptop with no network — all three are real delivery
+// targets for this project.
+export default defineConfig({
+  base: './',
+  plugins: [react(), ogWriter()],
+  build: {
+    assetsInlineLimit: 0,
   },
 })

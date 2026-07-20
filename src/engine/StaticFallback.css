@@ -1,0 +1,25 @@
+/* Three converging pools in the channel colours, plus a fine dot grid for
+   the dispersed remainder. Cheap, no JS, and it survives anything. */
+.static-field {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 26% 50%, rgba(108, 155, 239, 0.26), transparent 34%),
+    radial-gradient(circle at 50% 46%, rgba(232, 163, 61, 0.24), transparent 32%),
+    radial-gradient(circle at 74% 52%, rgba(79, 180, 119, 0.22), transparent 34%),
+    radial-gradient(circle at 12% 22%, rgba(181, 123, 220, 0.14), transparent 26%),
+    radial-gradient(circle at 88% 24%, rgba(229, 98, 106, 0.12), transparent 26%),
+    radial-gradient(circle at 20% 82%, rgba(79, 195, 199, 0.12), transparent 26%),
+    radial-gradient(circle at 80% 80%, rgba(127, 143, 244, 0.12), transparent 26%);
+}
+
+.static-field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 20%, transparent 78%);
+  opacity: 0.5;
+}

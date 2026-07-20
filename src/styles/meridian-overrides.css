@@ -1,0 +1,101 @@
+/*
+ * Bridge between the page's tokens and the vendored component library.
+ *
+ * The library hard-codes its own `--pulse-*` values at :root for a dark app
+ * shell. Here they are re-pointed at the page's contextual tokens, so a
+ * component dropped into a light section flips with the section instead of
+ * staying dark on paper. The mapping is declared twice on purpose — a custom
+ * property that references another one resolves against the element it is
+ * declared on, so the same block has to exist on `.surface-light` for its
+ * lighter values to win there.
+ */
+
+:root,
+.surface-light {
+  --pulse-surface-canvas: var(--surface);
+  --pulse-surface-raised: var(--surface-raised);
+  --pulse-surface-card: var(--surface-card);
+  --pulse-surface-floating: var(--surface-raised);
+  --pulse-surface-modal: var(--surface-raised);
+
+  --pulse-text-primary: var(--text-primary);
+  --pulse-text-body: var(--text-body);
+  --pulse-text-secondary: var(--text-secondary);
+  --pulse-text-tertiary: var(--text-tertiary);
+  --pulse-text-disabled: var(--text-tertiary);
+
+  --pulse-border-subtle: var(--border-subtle);
+  --pulse-border-default: var(--border-default);
+  --pulse-border-emphasis: var(--border-strong);
+
+  --pulse-color-accent-500: var(--accent-on-surface);
+
+  --pulse-font-sans: var(--font-sans);
+  --pulse-font-serif: var(--font-serif);
+
+  --pulse-elevation-3-shadow: var(--shadow-card);
+  --pulse-elevation-4-shadow: var(--shadow-card);
+
+  /* The product scale is rooted at 14px for dense daily use. On a page read
+     once, from further away, that lands as fine print — every step up one
+     notch. */
+  --pulse-type-body-size: 16px;
+  --pulse-type-body-lh: 26px;
+  --pulse-type-body-lg-size: 18px;
+  --pulse-type-body-sm-size: 14px;
+  --pulse-type-caption-size: 13px;
+  --pulse-type-h2-size: 24px;
+  --pulse-type-h4-size: 16px;
+}
+
+/* PulseRoot ships a fixed 24px padding for the app shell; the page owns its
+   own spacing. */
+.pulse-root {
+  padding: 0 !important;
+  background: transparent;
+}
+
+/* The insight card is the single most important artifact on the page — it is
+   the product's actual output. It gets more room here than it does in a
+   dense app column. */
+.pulse-insight-card {
+  padding: clamp(24px, 3.5vw, 40px);
+  border-radius: var(--radius-lg);
+}
+
+.pulse-insight-card__title {
+  font-size: clamp(19px, 2.2vw, 26px);
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
+
+.pulse-insight-card__body {
+  font-size: clamp(17px, 1.5vw, 19px);
+  line-height: 1.65;
+  max-width: var(--measure);
+}
+
+.pulse-insight-card__impact strong,
+.pulse-stat-card__value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The library lays the evidence chips out in a non-wrapping row sized for
+   the app's card width. In a narrower marketing column the third quote gets
+   clipped at the card edge — and a clipped evidence trail undermines the
+   one claim this whole section is making. A grid reflows instead. */
+.pulse-insight-card__evidence {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--sp-4);
+}
+
+.pulse-evidence-chip {
+  font-size: 15px;
+  line-height: 1.5;
+  min-width: 0;
+}
+
+.pulse-btn--lg {
+  font-size: 16px;
+}

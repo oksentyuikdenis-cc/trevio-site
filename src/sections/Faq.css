@@ -1,0 +1,80 @@
+.faq {
+  padding-top: 0;
+}
+
+.faq__list {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.faq__q {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  padding-block: var(--sp-6);
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Safari renders a disclosure triangle unless this is suppressed. */
+.faq__q::-webkit-details-marker {
+  display: none;
+}
+
+.faq__q:hover {
+  color: var(--n-900);
+}
+
+/* A plus that becomes a minus. Two pseudo-elements rather than an icon font
+   or an SVG — it is two rectangles, and it inherits colour for free. */
+.faq__marker {
+  position: relative;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.35em;
+}
+
+.faq__marker::before,
+.faq__marker::after {
+  content: '';
+  position: absolute;
+  background: var(--accent-500);
+  transition: transform var(--dur-base) var(--ease), opacity var(--dur-base) var(--ease);
+}
+
+.faq__marker::before {
+  top: 6px;
+  left: 0;
+  width: 14px;
+  height: 1.5px;
+}
+
+.faq__marker::after {
+  left: 6px;
+  top: 0;
+  width: 1.5px;
+  height: 14px;
+}
+
+.faq__item[open] .faq__marker::after {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+.faq__a {
+  padding-bottom: var(--sp-6);
+  font-family: var(--font-serif);
+  font-size: var(--type-lead);
+  line-height: 1.62;
+  color: var(--text-secondary);
+  max-width: var(--measure);
+}

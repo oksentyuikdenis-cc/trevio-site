@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>OG generator</title>
+    <style>
+      body { margin: 0; background: #333; display: grid; place-items: center; min-height: 100vh; }
+      canvas { width: 600px; height: 315px; }
+    </style>
+  </head>
+  <body>
+    <canvas id="c" width="1200" height="630"></canvas>
+    <script type="module">
+      // Draws the share card entirely in canvas so it can be exported as real
+      // PNG bytes. Same seeded field and same type as the hero, frozen at the
+      // resolved state — the share preview should look like the page it opens.
+      const sans = new FontFace('OgSans', "url('/src/styles/fonts/hanken.woff2')", { weight: '400 700' })
+      const serif = new FontFace('OgSerif', "url('/src/styles/fonts/newsreader-italic.woff2')", {
+        style: 'italic',
+        weight: '200 800',
+      })
+      await Promise.all([sans.load(), serif.load()])
+      document.fonts.add(sans)
+      document.fonts.add(serif)
+
+      const c = document.getElementById('c')
+      const g = c.getContext('2d')
+
+      g.fillStyle = '#0A0A0C'
+      g.fillRect(0, 0, 1200, 630)
+
+      let seed = 20260720
+      const rnd = () => {
+        seed |= 0
+        seed = (seed + 0x6d2b79f5) | 0
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+      }
+      const gauss = () => Math.sqrt(-2 * Math.log(rnd() || 1e-6)) * Math.cos(2 * Math.PI * rnd())
+
+      const COLORS = ['#6C9BEF', '#E8A33D', '#7F8FF4', '#4FB477', '#E5626A', '#B57BDC', '#4FC3C7', '#D98C3D', '#9C9CA6']
+      const nodes = [[880, 200], [1010, 330], [900, 462]]
+
+      g.globalCompositeOperation = 'lighter'
+      for (let i = 0; i < 2400; i++) {
+        const col = COLORS[Math.floor(rnd() * COLORS.length)]
+        let x, y, a, r
+        if (i % 100 < 60) {
+          const n = nodes[Math.floor(rnd() * nodes.length)]
+          x = n[0] + gauss() * 58
+          y = n[1] + gauss() * 48
+          a = 0.9
+          r = 1.8
+        } else {
+          x = 560 + rnd() * 660
+          y = rnd() * 630
+          a = 0.34
+          r = 1.25
+        }
+        g.globalAlpha = a
+        g.fillStyle = col
+        g.beginPath()
+        g.arc(x, y, r, 0, 6.2832)
+        g.fill()
+      }
+      g.globalCompositeOperation = 'source-over'
+      g.globalAlpha = 1
+
+      // Scrim so the type has ground on the left.
+      const grad = g.createLinearGradient(0, 0, 1200, 0)
+      grad.addColorStop(0, 'rgba(10,10,12,0.98)')
+      grad.addColorStop(0.46, 'rgba(10,10,12,0.9)')
+      grad.addColorStop(0.72, 'rgba(10,10,12,0.42)')
+      grad.addColorStop(1, 'rgba(10,10,12,0.12)')
+      g.fillStyle = grad
+      g.fillRect(0, 0, 1200, 630)
+
+      // Wordmark
+      g.font = '600 30px OgSans'
+      g.fillStyle = '#F5F4F1'
+      g.fillText('Trev', 84, 104)
+      const w1 = g.measureText('Trev').width
+      g.fillStyle = '#E8A33D'
+      g.fillText('i', 84 + w1, 104)
+      const w2 = g.measureText('i').width
+      g.fillStyle = '#F5F4F1'
+      g.fillText('o', 84 + w1 + w2, 104)
+
+      // Headline
+      const lines = [
+        [{ t: 'Your customers', s: 'sans' }],
+        [{ t: 'already told you', s: 'sans' }],
+        [{ t: 'what to build next.', s: 'serif' }],
+      ]
+      let y = 300
+      for (const line of lines) {
+        let x = 84
+        for (const part of line) {
+          g.font = part.s === 'serif' ? 'italic 400 74px OgSerif' : '600 74px OgSans'
+          g.fillStyle = part.s === 'serif' ? '#EDBB6B' : '#F5F4F1'
+          g.fillText(part.t, x, y)
+          x += g.measureText(part.t).width
+        }
+        y += 86
+      }
+
+      // Footer line
+      g.fillStyle = '#E8A33D'
+      g.beginPath()
+      g.arc(90, 543, 5, 0, 6.2832)
+      g.fill()
+      g.font = '400 22px OgSans'
+      g.fillStyle = '#9C9CA6'
+      g.fillText('Feedback intelligence for product teams', 108, 551)
+
+      window.__og = () => c.toDataURL('image/png')
+      document.title = 'OG ready'
+    </script>
+  </body>
+</html>

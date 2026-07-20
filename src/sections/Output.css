@@ -1,0 +1,115 @@
+/* The light block is where the page changes register.
+   A flat butt-join between #0A0A0C and #FAF9F6 read as two different sites
+   stitched together. Lifting the light block over the dark one with a
+   rounded top edge makes the change deliberate — a sheet of paper laid over
+   the field, which is exactly what this section is claiming to be. */
+.output {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(var(--sp-8) * -1);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding-top: calc(var(--section-y) - var(--sp-6));
+}
+
+/* Tabs run down the left rather than across the top. Across the top, the
+   card below inherits the full container width, and a 1100px card holding a
+   70-character paragraph is a stretched dashboard widget — the exact thing
+   this section exists to argue against. Down the left, the card lands at a
+   width its own prose was measured for. */
+.output__layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) 1fr;
+  gap: clamp(24px, 3.5vw, 56px);
+  align-items: start;
+}
+
+.output__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  position: sticky;
+  top: 96px;
+}
+
+.output__tabs-title {
+  margin-bottom: var(--sp-2);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.output__tab {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-tertiary);
+  transition:
+    border-color var(--dur-base) var(--ease),
+    color var(--dur-base) var(--ease),
+    background var(--dur-base) var(--ease);
+}
+
+.output__tab:hover {
+  color: var(--text-secondary);
+  background: rgba(20, 20, 26, 0.03);
+}
+
+.output__tab.is-active {
+  background: var(--surface-raised);
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-card);
+}
+
+.output__tab-index {
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent-on-surface);
+  padding-top: 0.15em;
+}
+
+.output__tab-label {
+  font-size: var(--type-sm);
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* No actions are wired up on a marketing page, and the library renders an
+   empty container for them — which reads as a chunk of dead space at the
+   bottom of the most important card on the site. */
+.output__panel .pulse-insight-card__actions:empty {
+  display: none;
+}
+
+.output__note {
+  margin-top: var(--sp-6);
+  font-size: var(--type-caption);
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 940px) {
+  .output__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .output__tabs {
+    position: static;
+  }
+
+  .output__tab {
+    align-items: baseline;
+    padding: var(--sp-3) var(--sp-4);
+    border-color: var(--border-subtle);
+  }
+}

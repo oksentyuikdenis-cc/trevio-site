@@ -1,0 +1,82 @@
+/* The scene sits sticky behind the first three sections and changes state as
+   they pass over it, so the field is always showing whatever the copy
+   currently on screen is describing. */
+.stage {
+  position: relative;
+  background: var(--n-0);
+}
+
+/*
+ * The sticky pin has zero height, so it occupies no space in the flow and
+ * the sections that follow need no negative margin to sit over it. The
+ * earlier version pinned a full-height sticky element and pulled the
+ * content back up by -100vh; that overlaps a stuck (and therefore
+ * separately composited) layer with a negative-margin sibling, and the
+ * content stopped painting once the pin engaged. Zero-height pin plus an
+ * absolutely positioned viewport-sized child avoids the overlap entirely.
+ */
+.stage__scene {
+  position: sticky;
+  top: 0;
+  height: 0;
+  z-index: 0;
+}
+
+.stage__scene-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.signal-canvas {
+  position: absolute;
+  inset: 0;
+  /* Without this a touch-drag starting on the canvas is swallowed by the
+     renderer's pointer handling and the page refuses to scroll — the
+     classic full-bleed WebGL hero bug on phones. */
+  touch-action: pan-y;
+}
+
+/* Text sits on top of a live particle field, so it needs its own ground.
+   A centred vertical scrim darkens the middle band where copy lives while
+   leaving the edges of the field visible. */
+.stage__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(10, 10, 12, 0.82) 0%, rgba(10, 10, 12, 0.24) 26%, rgba(10, 10, 12, 0.24) 74%, rgba(10, 10, 12, 0.92) 100%),
+    radial-gradient(ellipse 78% 62% at 50% 50%, rgba(10, 10, 12, 0.5), transparent 72%);
+}
+
+/* On a phone the copy spans nearly the full width, so it sits over the
+   densest part of the field instead of beside it. The scrim has to carry
+   more weight there — serif body text loses legibility against moving
+   points far faster than a heavy sans headline does. */
+@media (max-width: 767px) {
+  .stage__scrim {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(10, 10, 12, 0.88) 0%,
+        rgba(10, 10, 12, 0.55) 22%,
+        rgba(10, 10, 12, 0.55) 78%,
+        rgba(10, 10, 12, 0.94) 100%
+      ),
+      radial-gradient(ellipse 92% 58% at 50% 50%, rgba(10, 10, 12, 0.62), transparent 76%);
+  }
+}
+
+.stage__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sections inside the stage are transparent — the stage owns the backdrop. */
+.stage__content .section {
+  background: transparent;
+}
