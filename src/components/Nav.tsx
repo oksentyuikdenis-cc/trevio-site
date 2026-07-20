@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import './Nav.css'
 
 function SignalMark() {
@@ -13,7 +14,54 @@ function SignalMark() {
   )
 }
 
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      {open ? (
+        <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      ) : (
+        <path
+          d="M3 6H17M3 10H17M3 14H17"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+      )}
+    </svg>
+  )
+}
+
+const LINKS = [
+  { href: '#capabilities', label: 'How it works' },
+  { href: '#showcase', label: 'Product' },
+  { href: '#differentiation', label: 'Why Pulse' },
+]
+
 export function Nav() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  // A resize past the mobile breakpoint (e.g. rotating a phone to landscape,
+  // or a tablet in a split-view app switching width) should not leave the
+  // drawer stranded open with no way to see the now-visible desktop links.
+  useEffect(() => {
+    if (!menuOpen) return
+
+    const mq = window.matchMedia('(min-width: 769px)')
+    const handleChange = () => setMenuOpen(false)
+    mq.addEventListener('change', handleChange)
+    return () => mq.removeEventListener('change', handleChange)
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (!menuOpen) return
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [menuOpen])
+
   return (
     <header className="nav">
       <a className="nav__brand" href="#top">
@@ -21,21 +69,46 @@ export function Nav() {
         Pulse
       </a>
       <nav className="nav__links" aria-label="Primary">
-        <a className="nav__link" href="#capabilities">
-          How it works
-        </a>
-        <a className="nav__link" href="#showcase">
-          Product
-        </a>
-        <a className="nav__link" href="#differentiation">
-          Why Pulse
-        </a>
+        {LINKS.map((link) => (
+          <a key={link.href} className="nav__link" href={link.href}>
+            {link.label}
+          </a>
+        ))}
       </nav>
       <div className="nav__actions">
         <button type="button" className="nav__cta">
           Explore Pulse
         </button>
+        <button
+          type="button"
+          className="nav__menu-toggle"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-menu"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          <MenuIcon open={menuOpen} />
+        </button>
       </div>
+      <nav
+        id="mobile-nav-menu"
+        className="nav__mobile-menu"
+        data-open={menuOpen}
+        aria-label="Primary"
+        aria-hidden={!menuOpen}
+      >
+        {LINKS.map((link) => (
+          <a
+            key={link.href}
+            className="nav__mobile-link"
+            href={link.href}
+            tabIndex={menuOpen ? 0 : -1}
+            onClick={() => setMenuOpen(false)}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
     </header>
   )
 }

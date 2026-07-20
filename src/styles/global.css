@@ -8,8 +8,9 @@
 
 html {
   scroll-behavior: smooth;
-  /* Fixed nav (64px) would otherwise cover the top of a section on jump-to-anchor. */
-  scroll-padding-top: 64px;
+  /* Fixed nav (64px, plus safe-area-inset-top on notched phones — see
+     Nav.css) would otherwise cover the top of a section on jump-to-anchor. */
+  scroll-padding-top: calc(64px + env(safe-area-inset-top, 0px));
 }
 
 html,
@@ -25,6 +26,9 @@ body {
   font-family: var(--pulse-font-sans);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* iOS Safari flashes a gray highlight rect on every tap by default; the
+     product already has its own hover/active states. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .page {
@@ -35,6 +39,11 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Without this, a touch-drag that starts on the canvas is captured by
+     R3F's pointer handling and the page won't scroll — the single most
+     common "full-bleed WebGL hero" mobile bug. Vertical pan always passes
+     through to the page; only true taps/drags are left for the scene. */
+  touch-action: pan-y;
 }
 
 @media (prefers-reduced-motion: reduce) {
