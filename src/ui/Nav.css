@@ -11,7 +11,7 @@
 
 .nav.is-condensed,
 .nav.is-open {
-  background: rgba(10, 10, 12, 0.82);
+  background: rgba(var(--nav-rgb), 0.82);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   border-bottom-color: var(--border-subtle);
@@ -47,19 +47,68 @@
 
 .nav__links a {
   font-size: var(--type-sm);
-  color: var(--n-600);
+  color: var(--text-secondary);
   text-decoration: none;
   transition: color var(--dur-fast) var(--ease);
 }
 
 .nav__links a:hover {
-  color: var(--n-900);
+  color: var(--text-primary);
 }
 
 .nav__actions {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
+}
+
+/* Theme switch. Deliberately outside `.nav__actions`, which is hidden on
+   phones — the toggle stays reachable in the bar at every width, next to the
+   hamburger, rather than being buried in the menu. */
+.nav__theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.nav__theme:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.nav__theme svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* The sun and moon are stacked; only the icon for the theme you can switch TO
+   is shown, so the control reads as "tap for the other one". */
+.nav__theme .icon-sun {
+  display: none;
+}
+:root[data-theme='light'] .nav__theme .icon-sun {
+  display: block;
+}
+:root[data-theme='light'] .nav__theme .icon-moon {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .nav__theme {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 /* Reading progress. Thin enough to be ambient, and the only element on the
@@ -96,7 +145,7 @@
   display: block;
   width: 20px;
   height: 1.5px;
-  background: var(--n-800);
+  background: var(--text-primary);
   transition: transform var(--dur-base) var(--ease), opacity var(--dur-base) var(--ease);
 }
 
@@ -119,7 +168,7 @@
 .nav__menu a {
   padding-block: var(--sp-3);
   font-size: 1.0625rem;
-  color: var(--n-800);
+  color: var(--text-body);
   text-decoration: none;
   /* 44px minimum touch target, met by padding rather than a fixed height so
      the label can wrap on a narrow phone without being clipped. */

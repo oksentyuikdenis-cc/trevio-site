@@ -24,7 +24,7 @@ body,
 }
 
 body {
-  background: var(--n-0);
+  background: var(--surface);
   color: var(--text-body);
   font-family: var(--font-sans);
   font-size: var(--type-body);
@@ -33,6 +33,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Surfaces ease between themes when the nav toggle flips `data-theme`. The
+   inline boot script sets the theme before first paint, so nothing here
+   animates on load — only a deliberate toggle. */
+body,
+.section,
+.stage,
+.footer,
+.stage__scrim,
+.nav.is-condensed,
+.nav.is-open {
+  transition: background-color var(--dur-base) var(--ease), background var(--dur-base) var(--ease),
+    color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .section,
+  .stage,
+  .footer,
+  .stage__scrim,
+  .nav.is-condensed,
+  .nav.is-open {
+    transition: none;
+  }
 }
 
 /* Every numeral on the page is tabular. Proportional figures make a

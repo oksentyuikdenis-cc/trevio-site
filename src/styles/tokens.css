@@ -156,7 +156,16 @@
  * "lighter surface" to "border plus shadow", and the accent steps one
  * darker to hold its contrast against the paper.
  */
-.surface-light {
+/*
+ * The same light values serve two jobs, so the selector list keeps them from
+ * drifting: `.surface-light` is a light island inside the dark page (the two
+ * output sections), and `:root[data-theme='light']` is the whole page flipped
+ * by the nav toggle. The root form additionally re-tints the scene chrome —
+ * the island form must not, or an island dropped in the dark page would carry
+ * a light scrim into it.
+ */
+.surface-light,
+:root[data-theme='light'] {
   --surface: #faf9f6;
   --surface-raised: #ffffff;
   --surface-card: #ffffff;
@@ -177,4 +186,12 @@
 
   background: var(--surface);
   color: var(--text-body);
+}
+
+/* Whole-page light: re-tint the scene's scrim and the nav wash to paper. Set
+   only on the root form so the dark page's light islands keep the dark scrim
+   behind the sticky scene they sit over. */
+:root[data-theme='light'] {
+  --scrim-rgb: 250, 249, 246;
+  --nav-rgb: 250, 249, 246;
 }
