@@ -77,6 +77,14 @@
      that reads well on black measures 2.1:1 on the light sections. */
   --focus-ring: var(--accent-500);
 
+  /* Scene chrome that composites against the surface, expressed as a bare RGB
+     triplet so the same gradient stack can be re-tinted per theme by swapping
+     one value. The scrim over the particle field and the condensed nav both
+     have to become light paper in the light theme, or dark text lands on a
+     dark wash over a light scene and disappears. */
+  --scrim-rgb: 10, 10, 12;
+  --nav-rgb: 10, 10, 12;
+
   /* ---- Type. Marketing scale: fluid, and considerably larger than the
      product's. `clamp` floors are set so nothing goes below comfortable
      mobile reading, ceilings so nothing gets absurd on a 27" display. ---- */

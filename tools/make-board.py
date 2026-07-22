@@ -87,14 +87,29 @@ def main():
             print(f"  · {item['title']}  ->  no link set, placeholder rendered")
             img = '<div class="card__placeholder" aria-hidden="true"><span>?</span></div>'
 
-        # mailto: is unreadable printed out; show the address instead.
-        shown = url
+        # The address people read/type. mailto: is unreadable printed out, so
+        # show just the recipient; https:// is noise, so strip it.
         if url.startswith("mailto:"):
             shown = url[len("mailto:"):].split("?")[0]
+            action = "Write to us"
         elif placeholder:
             shown = "—"
+            action = ""
         else:
             shown = re.sub(r"^https?://", "", url).rstrip("/")
+            action = "Open link"
+
+        # Both a scannable code and a followable link. On a phone you tap;
+        # from another laptop you copy the address; on paper you type it.
+        # The link and the button are hidden in print — a printed page has
+        # nothing to click, and the QR plus the address already cover it.
+        if placeholder:
+            link_html = f'<p class="card__url">{shown}</p>'
+        else:
+            link_html = (
+                f'<a class="card__url" href="{url}">{shown}</a>'
+                f'<a class="card__open" href="{url}">{action} <span aria-hidden="true">&rarr;</span></a>'
+            )
 
         note = STATUS_TEXT.get(status, "")
         cards.append(f"""
@@ -103,7 +118,7 @@ def main():
         <h2 class="card__title">{item['title']}</h2>
         <div class="card__code">{img}</div>
         <p class="card__hint">{item['hint']}</p>
-        <p class="card__url">{shown}</p>
+        {link_html}
         {f'<p class="card__status">{note}</p>' if note else ''}
       </article>""")
 
@@ -191,11 +206,27 @@ h1 em{{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--ac
   border:2px dashed var(--line);border-radius:10px;
   color:var(--line);font-size:52px;font-weight:600;
 }}
-.card__hint{{margin:0;font-size:14px;line-height:1.5;color:var(--muted);max-width:38ch}}
-.card__url{{
+/* Pushes the link + button to the bottom so buttons line up across cards
+   whose hint text runs to different lengths. */
+.card__hint{{margin:0 0 auto;font-size:14px;line-height:1.5;color:var(--muted);max-width:38ch}}
+a.card__url{{
+  margin:2px 0 0;font-family:ui-monospace,'SF Mono',Menlo,monospace;
+  font-size:12px;color:var(--faint);word-break:break-all;
+  text-decoration:none;transition:color .12s;
+}}
+a.card__url:hover{{color:var(--accent);text-decoration:underline}}
+p.card__url{{
   margin:2px 0 0;font-family:ui-monospace,'SF Mono',Menlo,monospace;
   font-size:12px;color:var(--faint);word-break:break-all;
 }}
+.card__open{{
+  margin-top:12px;align-self:stretch;text-align:center;
+  padding:11px 16px;border-radius:10px;
+  background:var(--accent);color:#fff;
+  font-size:14px;font-weight:600;text-decoration:none;
+  transition:filter .12s;
+}}
+.card__open:hover{{filter:brightness(1.08)}}
 .card__status{{
   margin:2px 0 0;font-size:11px;font-weight:600;letter-spacing:.08em;
   text-transform:uppercase;color:#a8562e;
@@ -213,6 +244,10 @@ footer{{
   .grid{{grid-template-columns:repeat(2,1fr);gap:16px}}
   .card{{box-shadow:none;border-color:#ccc}}
   .card__code{{width:168px}}
+  /* Nothing to tap on paper — the QR and the typed address already do the
+     job, and a filled button just wastes ink. */
+  .card__open{{display:none}}
+  a.card__url{{color:var(--faint)}}
   footer{{margin-top:16px}}
 }}
 </style>
@@ -229,7 +264,7 @@ footer{{
     <div class="grid">{cards}
     </div>
     <footer>
-      Codes generated offline and verified by decoding them back. If a scan fails, the address under each code can be typed by hand.
+      Scan the code, tap the button, or type the address — whichever is easiest. Codes are generated offline and verified by decoding them back.
     </footer>
   </div>
 </body>
